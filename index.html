@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>千年家書：世家南渡生存戰</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&display=swap');
+        body {
+            font-family: 'Noto Serif TC', serif;
+            background-color: #f7f3e8; /* 仿古紙張背景色 */
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23e2d5c3' fill-opacity='0.4' fill-rule='evenodd'/%3E");
+        }
+        .btn-choice {
+            transition: all 0.2s;
+        }
+        .btn-choice:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .region-active {
+            border: 4px solid #b91c1c;
+            box-shadow: 0 0 15px rgba(185, 28, 28, 0.5);
+            background-color: #fef2f2;
+        }
+        
+        /* 替換原本天下形勢圖背景設定 */
+        .map-container {
+            background-image: url('地圖.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        
+        /* 讓地圖上的字體更好辨識的遮罩 */
+        .map-overlay {
+            background-color: rgba(255, 255, 255, 0.4);
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        /* 卷軸樣式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1e9d2; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4c5a9; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #bdae93; 
+        }
+        /* 隱藏/自訂水平卷軸 (給卡牌區塊使用) */
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="text-gray-800 h-screen overflow-hidden flex flex-col md:flex-row">
+
+    <div class="w-full md:w-1/3 lg:w-1/4 bg-white/80 backdrop-blur-md border-r-2 border-[#d4c5a9] flex flex-col h-1/3 md:h-full p-4 shadow-xl z-10">
+        <div class="text-center mb-6">
+            <h1 class="text-2xl md:text-3xl font-black text-red-900 tracking-widest border-b-2 border-red-800 pb-2 inline-block">千年家書</h1>
+            <p class="text-sm font-bold text-gray-600 mt-1">世家南渡生存戰</p>
+        </div>
+
+        <div class="bg-[#fdfaf3] border border-[#d4c5a9] rounded-lg p-4 mb-4 shadow-inner">
+            <h2 class="text-lg font-bold text-amber-900 mb-3 flex items-center border-b border-amber-200 pb-1">
+                <span class="mr-2">📜</span> 家族狀態
+            </h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex flex-col">
+                    <span class="text-sm text-gray-500">當前位置</span>
+                    <span id="ui-location" class="font-bold text-lg text-red-700">黃河流域</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm text-gray-500">歷史時期</span>
+                    <span id="ui-era" class="font-bold text-lg text-blue-800">魏晉南北朝</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-grow bg-[#fdfaf3] border border-[#d4c5a9] rounded-lg p-4 shadow-inner overflow-y-auto">
+            <h2 class="text-lg font-bold text-amber-900 mb-3 border-b border-amber-200 pb-1">核心資源</h2>
+            
+            <div class="space-y-4">
+                <!-- 資源項目 -->
+                <div class="flex items-center justify-between p-2 rounded hover:bg-amber-50 transition">
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-3" title="人口（宗族規模）">👥</span>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-gray-700">人口</span>
+                            <span class="text-xs text-gray-500">宗族規模與勞動力</span>
+                        </div>
+                    </div>
+                    <span id="res-pop" class="text-xl font-black text-green-700">20</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2 rounded hover:bg-amber-50 transition">
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-3" title="財富（錢糧/土地）">💰</span>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-gray-700">財富</span>
+                            <span class="text-xs text-gray-500">錢糧與土地</span>
+                        </div>
+                    </div>
+                    <span id="res-wealth" class="text-xl font-black text-yellow-600">20</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2 rounded hover:bg-amber-50 transition">
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-3" title="文化（經學/聲望）">📜</span>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-gray-700">文化</span>
+                            <span class="text-xs text-gray-500">經學與聲望</span>
+                        </div>
+                    </div>
+                    <span id="res-culture" class="text-xl font-black text-blue-700">15</span>
+                </div>
+
+                <div class="flex items-center justify-between p-2 rounded hover:bg-amber-50 transition">
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-3" title="武力（家丁/部曲）">⚔️</span>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-gray-700">武力</span>
+                            <span class="text-xs text-gray-500">家丁與防禦力</span>
+                        </div>
+                    </div>
+                    <span id="res-military" class="text-xl font-black text-red-700">10</span>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-amber-200">
+                <h3 class="text-sm font-bold text-amber-900 mb-2">家族成就標籤</h3>
+                <div id="ui-tags" class="flex flex-wrap gap-2">
+                    <span class="text-sm text-gray-400 italic">尚無特殊事蹟...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-1 flex flex-col h-2/3 md:h-full relative">
+        
+        <!-- Map Area -->
+        <div class="h-[60%] md:h-[55%] p-4 md:p-8 map-container overflow-y-auto relative border-b-4 border-amber-900/30">
+            <div class="map-overlay"></div>
+            <div class="relative z-10 h-full flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-black text-amber-900 tracking-widest bg-white/80 px-4 py-1 rounded shadow-sm">天下形勢圖</h2>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 h-full pb-2">
+                    
+                    <!-- 黃河流域 -->
+                    <div id="region-yellow" class="bg-white/85 p-3 md:p-4 rounded-xl shadow-lg border-2 border-transparent transition-all relative flex flex-col justify-between backdrop-blur-sm">
+                        <div>
+                            <h3 class="font-bold text-lg text-amber-900 border-b border-amber-200 pb-1">黃河流域 (中原)</h3>
+                            <p class="text-xs text-gray-700 mt-1">初始龍興之地，戰亂暴風眼。</p>
+                        </div>
+                        <div class="mt-2 text-xs md:text-sm bg-gray-100/90 p-2 rounded">
+                            <span class="block font-bold text-gray-500 mb-1">當前回合產出預測：</span>
+                            <div id="yield-yellow" class="text-gray-700 font-medium">載入中...</div>
+                        </div>
+                    </div>
+
+                    <!-- 長江中下游 -->
+                    <div id="region-jiangnan" class="bg-white/85 p-3 md:p-4 rounded-xl shadow-lg border-2 border-transparent transition-all relative flex flex-col justify-between backdrop-blur-sm">
+                        <div>
+                            <h3 class="font-bold text-lg text-blue-900 border-b border-blue-200 pb-1">長江中下游 (江南)</h3>
+                            <p class="text-xs text-gray-700 mt-1">需開發。經濟南移之核心。</p>
+                        </div>
+                        <div class="mt-2 text-xs md:text-sm bg-gray-100/90 p-2 rounded">
+                            <span class="block font-bold text-gray-500 mb-1">當前回合產出預測：</span>
+                            <div id="yield-jiangnan" class="text-gray-700 font-medium">載入中...</div>
+                        </div>
+                    </div>
+
+                    <!-- 長江上游 -->
+                    <div id="region-bashu" class="bg-white/85 p-3 md:p-4 rounded-xl shadow-lg border-2 border-transparent transition-all relative flex flex-col justify-between backdrop-blur-sm">
+                        <div>
+                            <h3 class="font-bold text-lg text-green-900 border-b border-green-200 pb-1">長江上游 (巴蜀)</h3>
+                            <p class="text-xs text-gray-700 mt-1">易守難攻，戰亂避風港。</p>
+                        </div>
+                        <div class="mt-2 text-xs md:text-sm bg-gray-100/90 p-2 rounded">
+                            <span class="block font-bold text-gray-500 mb-1">當前回合產出預測：</span>
+                            <div id="yield-bashu" class="text-gray-700 font-medium">載入中...</div>
+                        </div>
+                    </div>
+
+                    <!-- 珠江流域 -->
+                    <div id="region-lingnan" class="bg-white/85 p-3 md:p-4 rounded-xl shadow-lg border-2 border-transparent transition-all relative flex flex-col justify-between backdrop-blur-sm">
+                        <div>
+                            <h3 class="font-bold text-lg text-purple-900 border-b border-purple-200 pb-1">珠江流域 (嶺南)</h3>
+                            <p class="text-xs text-gray-700 mt-1">早期有瘴癘，後期解鎖海貿。</p>
+                        </div>
+                        <div class="mt-2 text-xs md:text-sm bg-gray-100/90 p-2 rounded">
+                            <span class="block font-bold text-gray-500 mb-1">當前回合產出預測：</span>
+                            <div id="yield-lingnan" class="text-gray-700 font-medium">載入中...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event & Action Area -->
+        <div class="flex-1 bg-white shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.1)] z-20 flex flex-col relative">
+            <!-- Phase Indicator -->
+            <div class="w-full bg-amber-900 text-amber-50 py-2 px-6 flex justify-between items-center text-sm font-bold shadow-md">
+                <span id="ui-phase-title">階段 1：歷史危機爆發</span>
+                <span id="ui-round-info">回合 1 / 4</span>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6 md:p-8 flex flex-col">
+                <!-- Narrative Text -->
+                <div id="event-text" class="text-lg md:text-xl text-gray-800 leading-relaxed mb-4 font-medium">
+                    載入中...
+                </div>
+
+                <!-- Cards Area -->
+                <div id="cards-section" class="mb-6 hidden">
+                    <h3 class="text-sm font-bold text-indigo-900 mb-2 flex justify-between items-end border-b border-indigo-200 pb-1">
+                        <span>🎴 家族計策卡 (點擊使用)</span>
+                        <span class="text-xs font-normal text-gray-500">手牌上限: 3</span>
+                    </h3>
+                    <div id="ui-cards" class="flex gap-3 overflow-x-auto pb-2 custom-scrollbar">
+                        <!-- Cards will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Action Buttons container -->
+                <div id="action-buttons" class="mt-auto grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Buttons will be injected here via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-[#fdfaf3] max-w-2xl w-full p-8 md:p-12 rounded-2xl shadow-2xl mx-4 text-center border-4 border-amber-900 relative">
+            <h2 id="modal-title" class="text-4xl font-black text-red-900 mb-6 tracking-widest border-b-2 border-red-900 pb-4 inline-block">遊戲結束</h2>
+            <div id="modal-content" class="text-left text-lg text-gray-800 mb-8 space-y-4">
+                <!-- Content injected by JS -->
+            </div>
+            <button onclick="location.reload()" class="bg-amber-900 hover:bg-amber-800 text-white font-bold py-3 px-8 rounded-lg text-xl transition transform hover:scale-105 shadow-lg">
+                重新推演歷史
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- 遊戲資料設定 (Game Data) ---
+        const REGIONS = {
+            'yellow': { id: 'yellow', name: '黃河流域' },
+            'jiangnan': { id: 'jiangnan', name: '長江中下游' },
+            'bashu': { id: 'bashu', name: '長江上游' },
+            'lingnan': { id: 'lingnan', name: '珠江流域' }
+        };
+
+        const ERAS = [
+            { id: 0, name: "魏晉南北朝", theme: "衣冠南渡" },
+            { id: 1, name: "唐代中後期", theme: "安史之亂" },
+            { id: 2, name: "宋代", theme: "靖康之難與經濟南移" },
+            { id: 3, name: "明代初年", theme: "大槐樹下的強制遷徙" }
+        ];
+
+        // 每個時代的地區產出規則 (結算時發放)
+        const REGION_YIELDS = [
+            // 魏晉
+            { 'yellow': { pop: 3, wealth: 3, culture: 2, military: 1 }, 'jiangnan': { pop: 1, wealth: 1, culture: 0, military: 0 }, 'bashu': { pop: 2, wealth: 1, culture: -1, military: 1 }, 'lingnan': { pop: -2, wealth: 0, culture: 0, military: 0 } },
+            // 唐代
+            { 'yellow': { pop: 1, wealth: 1, culture: 1, military: -1 }, 'jiangnan': { pop: 3, wealth: 4, culture: 2, military: 0 }, 'bashu': { pop: 2, wealth: 2, culture: 0, military: 1 }, 'lingnan': { pop: -1, wealth: 1, culture: 0, military: 0 } },
+            // 宋代
+            { 'yellow': { pop: 0, wealth: 0, culture: 0, military: -2 }, 'jiangnan': { pop: 4, wealth: 6, culture: 4, military: 1 }, 'bashu': { pop: 2, wealth: 2, culture: 1, military: 1 }, 'lingnan': { pop: 1, wealth: 5, culture: 1, military: 0 } },
+            // 明初 (重新平衡)
+            { 'yellow': { pop: 4, wealth: 3, culture: 2, military: 2 }, 'jiangnan': { pop: 2, wealth: 4, culture: 3, military: 0 }, 'bashu': { pop: 2, wealth: 2, culture: 1, military: 1 }, 'lingnan': { pop: 2, wealth: 3, culture: 1, military: 0 } }
+        ];
+
+        // --- 卡牌資料庫 (Card Pool) ---
+        const CARD_POOL = [
+            { id: 'c1', name: '開倉放糧', desc: '消耗💰3，吸引流民👥+5', cost: {wealth: 3}, effect: () => { state.wealth -= 3; state.pop += 5; } },
+            { id: 'c2', name: '重金求學', desc: '消耗💰5，提升文化📜+4', cost: {wealth: 5}, effect: () => { state.wealth -= 5; state.culture += 4; } },
+            { id: 'c3', name: '招兵買馬', desc: '消耗💰5，提升武力⚔️+4', cost: {wealth: 5}, effect: () => { state.wealth -= 5; state.military += 4; } },
+            { id: 'c4', name: '變賣家產', desc: '消耗📜2，換取救急金💰8', cost: {culture: 2}, effect: () => { state.culture -= 2; state.wealth += 8; } },
+            { id: 'c5', name: '聯姻結盟', desc: '消耗💰3，獲得人口👥+2, 文化📜+2', cost: {wealth: 3}, effect: () => { state.wealth -= 3; state.pop += 2; state.culture += 2; } },
+            { id: 'c6', name: '休養生息', desc: '無消耗，全資源小幅恢復+1', cost: {}, effect: () => { state.wealth +=1; state.pop +=1; state.culture +=1; state.military +=1; } }
+        ];
+
+        // --- 遊戲狀態 (Game State) ---
+        let state = {
+            pop: 20,
+            wealth: 20,
+            culture: 15,
+            military: 10,
+            era: 0, // 0 to 3
+            phase: 0, // 0: Crisis, 1: Move, 2: Settle
+            location: 'yellow',
+            tags: [],
+            cards: [], // 玩家手牌 IDs
+            isGameOver: false,
+            // 暫存選擇
+            tempTargetRegion: null
+        };
+
+        // --- 核心更新邏輯 ---
+        
+        function updateUI() {
+            if (state.isGameOver) return;
+
+            // Update Resources
+            document.getElementById('res-pop').innerText = state.pop;
+            document.getElementById('res-wealth').innerText = state.wealth;
+            document.getElementById('res-culture').innerText = state.culture;
+            document.getElementById('res-military').innerText = state.military;
+
+            // 檢查是否滅亡
+            if (state.pop <= 0) {
+                gameOver("家族滅亡！", "您的宗族人口耗盡，消散在歷史的長河中。");
+                return;
+            }
+
+            // Update Status
+            document.getElementById('ui-era').innerText = ERAS[state.era].name;
+            document.getElementById('ui-location').innerText = REGIONS[state.location].name;
+            document.getElementById('ui-round-info').innerText = `回合 ${state.era + 1} / 4`;
+
+            // Update Tags
+            const tagsContainer = document.getElementById('ui-tags');
+            if (state.tags.length === 0) {
+                tagsContainer.innerHTML = '<span class="text-sm text-gray-400 italic">尚無特殊事蹟...</span>';
+            } else {
+                tagsContainer.innerHTML = state.tags.map(tag => 
+                    `<span class="bg-amber-100 text-amber-800 border border-amber-300 text-xs font-bold px-2 py-1 rounded shadow-sm">${tag}</span>`
+                ).join('');
+            }
+
+            // Update Map Highlighting & Yields
+            Object.keys(REGIONS).forEach(loc => {
+                const el = document.getElementById(`region-${loc}`);
+                if (loc === state.location) {
+                    el.classList.add('region-active');
+                    el.classList.remove('opacity-60');
+                } else {
+                    el.classList.remove('region-active');
+                    el.classList.add('opacity-60');
+                }
+
+                // Update Yield text based on current era
+                const yields = REGION_YIELDS[state.era][loc];
+                const yieldText = `
+                    <span class="${yields.pop >= 0 ? 'text-green-600' : 'text-red-600'}">👥${yields.pop > 0 ? '+' : ''}${yields.pop}</span> | 
+                    <span class="${yields.wealth >= 0 ? 'text-yellow-600' : 'text-red-600'}">💰${yields.wealth > 0 ? '+' : ''}${yields.wealth}</span> | 
+                    <span class="${yields.culture >= 0 ? 'text-blue-600' : 'text-red-600'}">📜${yields.culture > 0 ? '+' : ''}${yields.culture}</span> | 
+                    <span class="${yields.military >= 0 ? 'text-red-800' : 'text-red-600'}">⚔️${yields.military > 0 ? '+' : ''}${yields.military}</span>
+                `;
+                document.getElementById(`yield-${loc}`).innerHTML = yieldText;
+            });
+
+            renderCards();
+        }
+
+        function renderCards() {
+            const container = document.getElementById('ui-cards');
+            const section = document.getElementById('cards-section');
+            if(!container) return;
+            
+            // 如果遊戲剛開始或還沒發牌，隱藏區塊
+            if (state.phase === 0 && state.era === 0 && state.cards.length === 0) return;
+            section.classList.remove('hidden');
+
+            container.innerHTML = '';
+            if(state.cards.length === 0) {
+                container.innerHTML = '<span class="text-sm text-gray-400 italic py-2">目前無手牌</span>';
+                return;
+            }
+
+            state.cards.forEach((cardId, index) => {
+                const card = CARD_POOL.find(c => c.id === cardId);
+                if(!card) return;
+                
+                let canPlay = true;
+                if(card.cost) {
+                    if(card.cost.wealth && state.wealth < card.cost.wealth) canPlay = false;
+                    if(card.cost.pop && state.pop < card.cost.pop) canPlay = false;
+                    if(card.cost.culture && state.culture < card.cost.culture) canPlay = false;
+                    if(card.cost.military && state.military < card.cost.military) canPlay = false;
+                }
+
+                const btn = document.createElement('button');
+                btn.className = `w-36 p-3 rounded-lg border-2 text-left text-sm flex-shrink-0 transition-all shadow-sm flex flex-col justify-between ${canPlay ? 'bg-indigo-50 border-indigo-300 hover:bg-indigo-100 hover:-translate-y-1 cursor-pointer text-indigo-900' : 'bg-gray-50 border-gray-200 text-gray-400 cursor-not-allowed opacity-70'}`;
+                btn.innerHTML = `
+                    <div class="font-bold mb-1 text-base border-b border-indigo-200/50 pb-1">${card.name}</div>
+                    <div class="text-xs mt-1 leading-relaxed">${card.desc}</div>
+                `;
+                
+                if(canPlay) {
+                    btn.onclick = () => { playCard(index); };
+                }
+                container.appendChild(btn);
+            });
+        }
+
+        function playCard(index) {
+            const cardId = state.cards[index];
+            const card = CARD_POOL.find(c => c.id === cardId);
+            if(card) {
+                card.effect();
+                state.cards.splice(index, 1); // 移除手牌
+                updateUI();
+            }
+        }
+
+        function drawCard(num = 1) {
+            for(let i=0; i<num; i++) {
+                if(state.cards.length < 3) { // 上限3張
+                    const randomCard = CARD_POOL[Math.floor(Math.random() * CARD_POOL.length)];
+                    state.cards.push(randomCard.id);
+                }
+            }
+            updateUI();
+        }
+
+        function setPhaseUI(phaseNum, title, text, choices) {
+            document.getElementById('ui-phase-title').innerText = `階段 ${phaseNum}：${title}`;
+            document.getElementById('event-text').innerHTML = text;
+            
+            const btnContainer = document.getElementById('action-buttons');
+            btnContainer.innerHTML = '';
+            
+            choices.forEach(choice => {
+                const btn = document.createElement('button');
+                // 根據按鈕類型給予不同顏色
+                let colorClass = "bg-amber-100 border-amber-300 text-amber-900 hover:bg-amber-200"; // 預設
+                if(choice.style === 'primary') colorClass = "bg-red-800 border-red-900 text-white hover:bg-red-700";
+                if(choice.style === 'safe') colorClass = "bg-blue-800 border-blue-900 text-white hover:bg-blue-700";
+                if(choice.style === 'danger') colorClass = "bg-yellow-600 border-yellow-700 text-white hover:bg-yellow-500";
+                if(choice.style === 'success') colorClass = "bg-green-700 border-green-800 text-white hover:bg-green-600";
+
+                btn.className = `btn-choice w-full py-4 px-6 rounded-xl border-2 font-bold text-lg text-left shadow-sm flex flex-col justify-center items-start ${colorClass}`;
+                
+                let innerHTML = `<span>${choice.label}</span>`;
+                if(choice.desc) {
+                    innerHTML += `<span class="text-sm font-normal mt-1 opacity-90">${choice.desc}</span>`;
+                }
+                btn.innerHTML = innerHTML;
+
+                btn.onclick = () => {
+                    // 執行效果
+                    if(choice.effect) choice.effect();
+                    // 進入下一步
+                    if(choice.next) choice.next();
+                };
+                btnContainer.appendChild(btn);
+            });
+            updateUI();
+        }
+
+        function addTag(tag) {
+            if (!state.tags.includes(tag)) {
+                state.tags.push(tag);
+            }
+        }
+
+        // --- 劇情控制器 (Story Engine) ---
+
+        function startEra0() {
+            state.phase = 0;
+            if(state.location !== 'yellow') {
+                // 防呆，確保開始在黃河
+                state.location = 'yellow';
+            }
+            
+            setPhaseUI(1, "歷史危機爆發 (推力)", 
+                "<strong>【永嘉之禍】爆發！</strong><br><br>西晉末年，五胡亂華，洛陽與長安相繼淪陷。中原大地戰火紛飛，生靈塗炭。作為黃河流域的名門望族，宗族面臨生死存亡的抉擇。",
+                [
+                    {
+                        label: "✈️ 舉族南渡 (衣冠南渡)", 
+                        desc: "放棄北方基業，向南逃亡。保留文化火種。",
+                        style: "primary",
+                        next: () => movePhase0()
+                    },
+                    {
+                        label: "🏳️ 留在北方，向胡族妥協", 
+                        desc: "人口與財富大減 (各-3)，失去一半文化，轉入「胡漢融合」路線。",
+                        style: "danger",
+                        effect: () => {
+                            state.pop -= 3;
+                            state.wealth -= 3;
+                            state.culture = Math.floor(state.culture / 2);
+                        },
+                        next: () => settlePhase0_North()
+                    },
+                    {
+                        label: "⚖️ 分宗兩地 (兩頭下注)", 
+                        desc: "主脈留守，支脈南遷。消耗資源 (人口-5, 財富-5)，獲得「狡兔三窟」標籤與1張計策卡。",
+                        style: "safe",
+                        effect: () => {
+                            state.pop -= 5;
+                            state.wealth -= 5;
+                            addTag('狡兔三窟');
+                            drawCard(1);
+                        },
+                        next: () => settlePhase0_North() // 以主脈視角留北
+                    }
+                ]
+            );
+        }
+
+        function movePhase0() {
+            state.phase = 1;
+            setPhaseUI(2, "遷徙路線抉擇 (移動)", 
+                "南方廣闊，你要帶領族人逃往何處？",
+                [
+                    {
+                        label: "🌊 逃往江南 (長江中下游)", 
+                        desc: "發展潛力最大，但需要開發。走水路需花費財富 (-3)，安全。",
+                        style: "safe",
+                        effect: () => { state.location = 'jiangnan'; state.wealth -= 3; },
+                        next: () => settlePhase0_South()
+                    },
+                    {
+                        label: "⛰️ 翻越秦嶺入蜀 (長江上游)", 
+                        desc: "易守難攻的避風港。走陸路免費，但遭遇盜匪，需消耗武力 (-3)。",
+                        style: "danger",
+                        effect: () => { state.location = 'bashu'; state.military -= 3; },
+                        next: () => settlePhase0_South()
+                    }
+                ]
+            );
+        }
+
+        function settlePhase0_North() {
+            state.phase = 2;
+            setPhaseUI(3, "落地與在地化 (拉力與融合)", 
+                "留在北方的日子極為艱難。數十年後，<strong>北魏孝文帝推行漢化政策</strong>，急需中原世族的文化底蘊來鞏固政權。",
+                [
+                    {
+                        label: "🤝 參與漢化，出仕北朝", 
+                        desc: "獲得「胡漢融合」標籤，恢復聲望 (文化+5)，獲得封地 (財富+5)。",
+                        style: "success",
+                        effect: () => {
+                            addTag('胡漢融合');
+                            state.culture += 5;
+                            state.wealth += 5;
+                        },
+                        next: () => endRound()
+                    }
+                ]
+            );
+        }
+
+        function settlePhase0_South() {
+            state.phase = 2;
+            let text = `抵達 ${REGIONS[state.location].name}。南方朝廷（東晉）建立。`;
+            let choices = [];
+
+            if (state.culture >= 5) {
+                text += "<br><br>你的家族擁有極高的文化聲望，朝廷為了安撫南渡士族，實施<strong>「僑置州郡」</strong>與<strong>「九品中正制」</strong>。";
+                choices.push({
+                    label: "📜 接受僑置特權",
+                    desc: "憑藉文化底蘊當官，獲得免稅特權與土地 (財富+8，人口+2)。",
+                    style: "primary",
+                    effect: () => { state.wealth += 8; state.pop += 2; },
+                    next: () => endRound()
+                });
+            } else {
+                text += "<br><br>你的家族文化聲望不足以引起朝廷重視。只能自己想辦法與當地豪族（土客）爭奪生存空間。這引發了<strong>「土客衝突」</strong>！";
+                choices.push(
+                    {
+                        label: "💍 選擇聯姻妥協",
+                        desc: "消耗財富 (-5) 換取安穩，獲得「土客融合」標籤。",
+                        style: "success",
+                        effect: () => { state.wealth -= 5; addTag('土客融合'); },
+                        next: () => endRound()
+                    },
+                    {
+                        label: "⚔️ 選擇武裝鎮壓",
+                        desc: "消耗武力 (-5) 強行佔地。若武力不足將損失慘重。",
+                        style: "danger",
+                        effect: () => { 
+                            if(state.military >= 5) { state.military -= 5; state.wealth += 3; }
+                            else { state.pop -= 5; state.wealth -= 2; }
+                        },
+                        next: () => endRound()
+                    },
+                    {
+                        label: "⛰️ 隱居山林 (避世)",
+                        desc: "不與土客爭鋒，遁入深山開荒。獲得清靜 (文化-3，財富+3)。",
+                        style: "safe",
+                        effect: () => { state.wealth += 3; state.culture -= 3; },
+                        next: () => endRound()
+                    }
+                );
+            }
+            setPhaseUI(3, "落地與在地化 (拉力與融合)", text, choices);
+        }
+
+        function startEra1() {
+            state.phase = 0;
+            let text = "<strong>【安史之亂】爆發！</strong><br><br>大唐盛世戛然而止，北方陷入長期的戰亂與藩鎮割據。";
+            let choices = [];
+
+            if (state.location === 'yellow') {
+                text += "你的家族身處風暴中心，面臨兵災與叛軍的掠奪！";
+                choices.push(
+                    {
+                        label: "🏃‍♂️ 再次逃亡南方",
+                        desc: "人口 (-3)，放棄中原基業 (財富-5)。",
+                        style: "primary",
+                        effect: () => { state.pop -= 3; state.wealth -= 5; },
+                        next: () => movePhase1()
+                    },
+                    {
+                        label: "🛡️ 組織鄉勇死守",
+                        desc: "消耗大量武力 (-8)，若扛不住將嚴重損失人口與財富。",
+                        style: "danger",
+                        effect: () => { 
+                            if(state.military >= 8) { state.military -= 8; }
+                            else { state.pop -= 8; state.wealth -= 8; state.military = 0;}
+                        },
+                        next: () => endRound()
+                    },
+                    {
+                        label: "💰 破財消災 (賄賂叛軍)",
+                        desc: "大撒幣買通叛軍將領。消耗極大財富 (-10)，保全人口，抽2張計策卡。",
+                        style: "safe",
+                        effect: () => { state.wealth -= 10; drawCard(2); },
+                        next: () => endRound()
+                    }
+                );
+            } else {
+                text += "幸運的是，你的家族在南方避開了最嚴重的戰火。但大量北方流民湧入，帶來了機會與挑戰。";
+                choices.push(
+                    {
+                        label: "🚢 利用大運河通商",
+                        desc: "吸收流民 (人口+3)，利用運河開展商業 (財富+5)。",
+                        style: "success",
+                        effect: () => { state.pop += 3; state.wealth += 5; },
+                        next: () => endRound()
+                    },
+                    {
+                        label: "⛺ 建立流民收容營",
+                        desc: "消耗財富 (-5)，獲得大量勞動力 (+8) 與聲望 (+3)。",
+                        style: "primary",
+                        effect: () => { state.wealth -= 5; state.pop += 8; state.culture += 3; },
+                        next: () => endRound()
+                    }
+                );
+            }
+            setPhaseUI(1, "歷史危機爆發 (推力)", text, choices);
+        }
+
+        function movePhase1() {
+            state.phase = 1;
+            setPhaseUI(2, "遷徙路線抉擇 (移動)", 
+                "大運河已開通，提供了更便捷的逃亡路線。",
+                [
+                    {
+                        label: "🚢 斥資包船下江南", 
+                        desc: "利用大運河。消耗財富 (-4)，安全抵達江南。",
+                        style: "safe",
+                        effect: () => { state.location = 'jiangnan'; state.wealth -= 4; },
+                        next: () => settlePhase1()
+                    },
+                    {
+                        label: "🏕️ 徒步逃往嶺南", 
+                        desc: "遠離中原。免費，但路途遙遠染上瘴氣 (人口-4)。",
+                        style: "danger",
+                        effect: () => { state.location = 'lingnan'; state.pop -= 4; },
+                        next: () => settlePhase1()
+                    }
+                ]
+            );
+        }
+
+        function settlePhase1() {
+            state.phase = 2;
+            setPhaseUI(3, "落地與在地化 (拉力與融合)", 
+                `抵達 ${REGIONS[state.location].name}。這裡已有先來者，必須設法立足。`,
+                [
+                    {
+                        label: "🌾 招募流民開墾", 
+                        desc: "投入現有資源開墾荒地。消耗財富 (-3)，獲得穩定人口增長 (人口+5)。",
+                        style: "primary",
+                        effect: () => { state.wealth -= 3; state.pop += 5; },
+                        next: () => endRound()
+                    }
+                ]
+            );
+        }
+
+        function startEra2() {
+            state.phase = 0;
+            let text = "<strong>【靖康之難】爆發！</strong><br><br>金兵南下，北宋滅亡，朝廷南遷臨安（杭州）。北方徹底淪陷。";
+            let choices = [];
+
+            if (state.location === 'yellow') {
+                text += "黃河流域已被外族全面控制！留下來將失去一切！";
+                choices.push({
+                    label: "😭 拋棄一切逃難",
+                    desc: "財富歸零，人口減半，強制逃往江南。",
+                    style: "danger",
+                    effect: () => { state.wealth = 0; state.pop = Math.floor(state.pop / 2); state.location = 'jiangnan'; },
+                    next: () => settlePhase2()
+                });
+            } else {
+                text += `你的家族在 ${REGIONS[state.location].name}。政治中心南移，南方迎來了前所未有的經濟大爆發與文化繁榮！`;
+                choices.push({
+                    label: "💰 迎接經濟繁榮",
+                    desc: "進入發展階段。",
+                    style: "success",
+                    next: () => settlePhase2()
+                });
+            }
+            setPhaseUI(1, "歷史危機爆發 (推力)", text, choices);
+        }
+
+        function settlePhase2() {
+            state.phase = 2;
+            let text = `南宋時期，經濟重心已完全南移。現在是投資家族未來的關鍵時刻！`;
+            let choices = [];
+
+            // 占城稻 (通用於江南、嶺南、巴蜀)
+            if (state.location !== 'yellow') {
+                choices.push({
+                    label: "🌾 推廣「占城稻」",
+                    desc: "引進耐旱早熟的新品種。消耗財富 (-5)，獲得農業大爆發 (財富+15)。",
+                    style: "success",
+                    effect: () => { state.wealth -= 5; state.wealth += 15; },
+                    next: () => endRound()
+                });
+            }
+
+            // 科舉 (需要文化)
+            choices.push({
+                label: "📖 投資書院，全力科舉",
+                desc: "消耗財富 (-8) 培養子弟。若原文化 > 10，中舉獲得巨大聲望 (文化+12)。",
+                style: "primary",
+                effect: () => { 
+                    state.wealth -= 8; 
+                    if(state.culture > 10) state.culture += 12;
+                    else state.culture += 5; // 失敗也有安慰獎
+                },
+                next: () => endRound()
+            });
+
+            // 嶺南特有：市舶司海貿
+            if (state.location === 'lingnan' || state.location === 'jiangnan') {
+                choices.push({
+                    label: "🚢 參與海外貿易",
+                    desc: "前往市舶司從事海貿。高風險高回報 (武力-2 防海盜，財富+20)。",
+                    style: "danger",
+                    effect: () => { state.military -= 2; state.wealth += 20; },
+                    next: () => endRound()
+                });
+            }
+
+            // 新增選項：手工業
+            choices.push({
+                label: "🏺 投資瓷窯與絲綢",
+                desc: "發展早期手工業。消耗武力 (-3)，獲得穩定財富 (+10) 與1張卡。",
+                style: "safe",
+                effect: () => { state.military -= 3; state.wealth += 10; addTag('豪商巨賈'); drawCard(1); },
+                next: () => endRound()
+            });
+
+            setPhaseUI(3, "落地與在地化 (拉力與融合)", text, choices);
+        }
+
+        function startEra3() {
+            state.phase = 0;
+            let text = "<strong>【大槐樹下的強制遷徙】</strong><br><br>明朝初年，中原經歷長期戰亂，人口凋零；而南方則人滿為患。朱元璋下令：<strong>由政府強制將人口密集區的百姓遷往北方荒地開墾！</strong>";
+            let choices = [];
+
+            if (state.location !== 'yellow' && state.location !== 'bashu') {
+                text += "<br><br>官差來到了你的家門，命令你們全族限期北遷中原！這是來自國家機器的強大「推力」。";
+                choices.push(
+                    {
+                        label: "🚶‍♂️ 遵旨北遷 (重返中原)",
+                        desc: "離開富庶的南方，回到荒蕪的黃河流域。獲得朝廷路費補助 (財富+5)。",
+                        style: "primary",
+                        effect: () => { state.location = 'yellow'; state.wealth += 5; addTag('奉旨拓荒'); },
+                        next: () => settlePhase3()
+                    },
+                    {
+                        label: "💰 賄賂官員，抗旨不遵",
+                        desc: "消耗極大財富 (-20) 買通上下，強行留在南方。",
+                        style: "danger",
+                        effect: () => { state.wealth -= 20; },
+                        next: () => settlePhase3()
+                    },
+                    {
+                        label: "📜 偽造戶籍隱匿人口",
+                        desc: "將人口轉入地下逃避徵召。人口+5，但失去朝廷庇護，文化-5。",
+                        style: "safe",
+                        effect: () => { state.pop += 5; state.culture -= 5; },
+                        next: () => settlePhase3()
+                    }
+                );
+            } else {
+                text += "<br><br>由於你們地處邊陲或本就在北方，逃過了這次強制遷徙。但朝廷實行了嚴格的「衛所兵制」。";
+                choices.push({
+                    label: "🛡️ 編入軍戶 (衛所制)",
+                    desc: "家族被迫半農半兵。軍事化管理 (武力+10，文化-5)。",
+                    style: "success",
+                    effect: () => { state.military += 10; state.culture -= 5; },
+                    next: () => settlePhase3()
+                });
+            }
+            setPhaseUI(1, "歷史危機爆發 (推力)", text, choices);
+        }
+
+        function settlePhase3() {
+            state.phase = 2;
+            setPhaseUI(3, "落地與在地化 (拉力與融合)", 
+                `明朝的統治逐漸穩固。無論你身在何處，這都是家族發展的最後衝刺。將剩餘的資源最大化吧！`,
+                [
+                    {
+                        label: "🏰 購置田產，穩固家業", 
+                        desc: "消耗人口 (-5) 大規模開墾，換取最終財富 (+15)。",
+                        style: "primary",
+                        effect: () => { state.pop -= 5; state.wealth += 15; },
+                        next: () => endRound()
+                    },
+                    {
+                        label: "📚 刻印家譜，傳承後世", 
+                        desc: "消耗財富 (-10) 總結家族歷史，換取最終文化 (+15)。",
+                        style: "safe",
+                        effect: () => { state.wealth -= 10; state.culture += 15; },
+                        next: () => endRound()
+                    }
+                ]
+            );
+        }
+
+        function endRound() {
+            // 結算當前地區的每回合自然產出/損耗
+            const yields = REGION_YIELDS[state.era][state.location];
+            state.pop += yields.pop;
+            state.wealth += yields.wealth;
+            state.culture += yields.culture;
+            state.military += yields.military;
+
+            // 確保資源不為負 (除了人口可能導致遊戲結束)
+            if(state.wealth < 0) state.wealth = 0;
+            if(state.culture < 0) state.culture = 0;
+            if(state.military < 0) state.military = 0;
+
+            updateUI(); // 先更新UI讓玩家看到結算後的數字
+
+            // 進入下一回合或結束遊戲
+            state.era++;
+            drawCard(1); // 每當進入新時代，發1張計策卡
+            
+            if (state.era >= ERAS.length) {
+                setTimeout(showEndGame, 1000); // 延遲顯示結束畫面
+            } else {
+                // 準備進入下一時代，顯示過場按鈕
+                setPhaseUI(3, `【${ERAS[state.era-1].name}】結束`, 
+                    "時光飛逝，數十年過去了。地區的資源產出與天下局勢發生了變化...",
+                    [
+                        {
+                            label: `進入下一時代：${ERAS[state.era].name}`,
+                            style: "primary",
+                            next: () => {
+                                if(state.era === 1) startEra1();
+                                else if(state.era === 2) startEra2();
+                                else if(state.era === 3) startEra3();
+                            }
+                        }
+                    ]
+                );
+            }
+        }
+
+        function gameOver(title, message) {
+            state.isGameOver = true;
+            document.getElementById('overlay-modal').classList.remove('hidden');
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-content').innerHTML = `
+                <p class="font-bold text-red-700 text-xl text-center">${message}</p>
+                <p class="mt-4">歷史的洪流無情，不是每個家族都能撐到最後。請重新擬定您的資源管理與遷徙策略。</p>
+            `;
+        }
+
+        function showEndGame() {
+            state.isGameOver = true;
+            document.getElementById('overlay-modal').classList.remove('hidden');
+            document.getElementById('modal-title').innerText = "遊戲通關：千年世家";
+            document.getElementById('modal-title').classList.replace('text-red-900', 'text-amber-900');
+            document.getElementById('modal-title').classList.replace('border-red-900', 'border-amber-900');
+
+            // 計算分數
+            let baseScore = (state.pop * 2) + state.wealth + state.culture + state.military;
+            let tagBonus = state.tags.length * 20; // 每個標籤 20 分
+            let totalScore = baseScore + tagBonus;
+
+            // 評價
+            let rank = "";
+            if(totalScore > 200) rank = "👑 鐘鳴鼎食，千古名門 (S級)";
+            else if(totalScore > 150) rank = "🏛️ 累世官宦，地方望族 (A級)";
+            else if(totalScore > 100) rank = "🏡 詩書傳家，小康之局 (B級)";
+            else rank = "🏚️ 勉強度日，平民百姓 (C級)";
+
+            document.getElementById('modal-content').innerHTML = `
+                <div class="text-center mb-6">
+                    <div class="text-6xl font-black text-red-800 mb-2">${totalScore} <span class="text-2xl text-gray-600">分</span></div>
+                    <div class="text-xl font-bold text-amber-700">${rank}</div>
+                </div>
+                
+                <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 text-sm">
+                    <h3 class="font-bold text-amber-900 border-b border-amber-200 pb-1 mb-2">得分結算表</h3>
+                    <ul class="space-y-1 text-gray-700">
+                        <li class="flex justify-between"><span>👥 人口 (${state.pop}) x 2</span> <span>${state.pop * 2}</span></li>
+                        <li class="flex justify-between"><span>💰 財富 (${state.wealth})</span> <span>${state.wealth}</span></li>
+                        <li class="flex justify-between"><span>📜 文化 (${state.culture})</span> <span>${state.culture}</span></li>
+                        <li class="flex justify-between"><span>⚔️ 武力 (${state.military})</span> <span>${state.military}</span></li>
+                        <li class="flex justify-between font-bold text-green-700 border-t border-amber-200 pt-1 mt-1">
+                            <span>🏷️ 歷史貢獻標籤加分 (${state.tags.length} 個)</span> <span>+${tagBonus}</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="mt-4 text-sm text-gray-600">
+                    <h3 class="font-bold text-amber-900">歷史反思：</h3>
+                    <p>回顧您的旅程，您是否發現了<strong>經濟重心南移</strong>的趨勢？為了在南方生存，您的家族是否做出了<strong>文化妥協與融合</strong>？這正是中國歷史上人群移動的縮影。</p>
+                </div>
+            `;
+        }
+
+        // --- 遊戲初始化 ---
+        window.onload = function() {
+            updateUI();
+            
+            // 開場白
+            setPhaseUI(0, "歷史的起點", 
+                "歡迎來到《千年家書》。你將扮演一個發跡於黃河流域的世族長老。<br><br>歷史的巨輪即將轉動，戰亂、天災、朝代更迭將不斷考驗你的決策。保護你的人口，累積財富與文化，並在中國廣袤的版圖上尋找生存之地。<br><br><span class='text-indigo-800 font-bold'>【新增機制】遭遇危機時，隨時點擊上方的「計策卡」來化險為夷！</span>",
+                [
+                    {
+                        label: "📜 翻開家譜，開始推演歷史", 
+                        style: "primary",
+                        next: () => {
+                            drawCard(2); // 開局先送2張卡
+                            startEra0();
+                        }
+                    }
+                ]
+            );
+        };
+
+    </script>
+</body>
+</html>
